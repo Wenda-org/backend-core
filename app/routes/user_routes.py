@@ -1,18 +1,10 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from app.database.connection import SessionLocal
 from app import models, schemas
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @router.get("/")
 def get_users(db: Session = Depends(get_db)):
-    return db.query(models.user.User).all()
+    return db.query(models.user.UserAdmin).all()
 

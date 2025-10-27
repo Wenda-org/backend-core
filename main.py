@@ -1,16 +1,14 @@
 from fastapi import FastAPI
-from app.routes import user_routes
+from app.routes import auth
 from app.database.connection import Base, engine
 from app.models import user
 
+app = FastAPI(title="Wenda API - Auth Module")
+
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Backend Core")
-
-app.include_router(user_routes.router)
+app.include_router(auth.router)
 
 @app.get("/")
-
 def root():
-    return {"message": "FastAPI backend funcionando!"}
-
+    return {"message": "Wenda API running successfully!"}
