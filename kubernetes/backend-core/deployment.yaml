@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-core-deployment
+  labels:
+    app: backend-core
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: backend-core
+  template:
+    metadata:
+      labels:
+        app: backend-core
+    spec:
+      containers:
+      - name: backend-core
+        image: mjoaquim2/wenda_k8s:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+          - configMapRef:
+              name: backend-config
+          - secretRef:
+              name: backend-secrets

@@ -1,20 +1,28 @@
 services:
   backend:
     build: .
+    image: mjoaquim2/wenda_k8s:latest
     container_name: backend-core
     restart: always
     ports:
       - "8000:8000"
+    networks:
+      - backend_net
     depends_on:
       - redis
     environment:
-      - DATABASE_URL=postgresql://neondb_owner:npg_3aSeQW0qTPju@ep-cold-king-adyr1oj3-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+    - DATABASE_URL=${DATABASE_URL}
+    - REDIS_HOST=${REDIS_HOST}
+    - REDIS_PORT=${REDIS_PORT}
 
   redis:
     image: redis:7
     container_name: redis-server
     restart: always
-    ports:
-      - "6379:6379"
+    networks:
+      - backend_net
+
+networks:
+  backend_net:
+    driver: bridge
+
