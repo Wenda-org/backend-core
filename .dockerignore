@@ -1,10 +1,47 @@
-venv/
-__pycache__/
-*.pyc
-*.pyo
-*.db
-.env
-.git
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Git
+.git/
 .gitignore
 
-.venv
+# Documentation
+*.md
+!README.md
+docs/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment files (use build args instead)
+.env
+.env.*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Build artifacts
+dist/
+
+# Prisma
+prisma/migrations/
+
+# Python (old backend)
+__pycache__/
+*.py[cod]
+*.pyc
+venv/
+.venv/
+*.egg-info/
+
+# Scripts
+*.sh
+
+# Temporary files
+*.tmp
+.cache/

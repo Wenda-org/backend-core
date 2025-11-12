@@ -1,0 +1,52 @@
+[{
+  "table_name": "alembic_version",
+  "columns": "{\"version_num character varying\"}"
+}, {
+  "table_name": "categories",
+  "columns": "{\"display_order integer\",\"slug character varying\",\"updated_at timestamp without time zone\",\"id uuid\",\"description text\",\"color character varying\",\"is_active boolean\",\"icon character varying\",\"created_at timestamp without time zone\",\"name character varying\"}"
+}, {
+  "table_name": "destination_images",
+  "columns": "{\"url character varying\",\"display_order integer\",\"thumbnail_url character varying\",\"is_main boolean\",\"created_at timestamp without time zone\",\"destination_id uuid\",\"id uuid\",\"caption character varying\"}"
+}, {
+  "table_name": "destinations",
+  "columns": "{\"amenities jsonb\",\"latitude double precision\",\"address text\",\"view_count integer\",\"created_at timestamp without time zone\",\"updated_at timestamp without time zone\",\"website character varying\",\"is_active boolean\",\"id uuid\",\"rating numeric\",\"email character varying\",\"description text\",\"review_count integer\",\"name character varying\",\"opening_hours character varying\",\"category character varying\",\"slug character varying\",\"images jsonb\",\"category_id uuid\",\"is_featured boolean\",\"location character varying\",\"accessibility jsonb\",\"longitude double precision\",\"deleted_at timestamp without time zone\",\"rating_avg double precision\",\"ticket_price character varying\",\"phone character varying\",\"province character varying\",\"long_description text\"}"
+}, {
+  "table_name": "favorites",
+  "columns": "{\"destination_id uuid\",\"created_at timestamp without time zone\",\"id uuid\",\"user_id uuid\"}"
+}, {
+  "table_name": "ml_models_registry",
+  "columns": "{\"last_updated timestamp without time zone\",\"version character varying\",\"id integer\",\"algorithm character varying\",\"status character varying\",\"trained_on date\",\"metrics jsonb\",\"model_name character varying\"}"
+}, {
+  "table_name": "ml_predictions",
+  "columns": "{\"id integer\",\"confidence_interval jsonb\",\"created_at timestamp without time zone\",\"year integer\",\"model_name character varying\",\"predicted_visitors integer\",\"month integer\",\"model_version character varying\",\"province character varying\"}"
+}, {
+  "table_name": "password_resets",
+  "columns": "{\"expires_at timestamp without time zone\",\"created_at timestamp without time zone\",\"token character varying\",\"used_at timestamp without time zone\",\"email character varying\",\"id uuid\"}"
+}, {
+  "table_name": "recommendations_log",
+  "columns": "{\"user_id uuid\",\"model_version character varying\",\"id integer\",\"score double precision\",\"created_at timestamp without time zone\",\"destination_id uuid\"}"
+}, {
+  "table_name": "review_helpful",
+  "columns": "{\"created_at timestamp without time zone\",\"id uuid\",\"review_id uuid\",\"user_id uuid\"}"
+}, {
+  "table_name": "review_images",
+  "columns": "{\"url character varying\",\"display_order integer\",\"thumbnail_url character varying\",\"id uuid\",\"review_id uuid\",\"created_at timestamp without time zone\"}"
+}, {
+  "table_name": "reviews",
+  "columns": "{\"updated_at timestamp without time zone\",\"helpful_count integer\",\"id uuid\",\"rating integer\",\"created_at timestamp without time zone\",\"comment text\",\"deleted_at timestamp without time zone\",\"user_id uuid\",\"is_verified boolean\",\"destination_id uuid\"}"
+}, {
+  "table_name": "tourism_statistics",
+  "columns": "{\"domestic_visitors integer\",\"occupancy_rate double precision\",\"province character varying\",\"avg_stay_days double precision\",\"foreign_visitors integer\",\"year integer\",\"created_at timestamp without time zone\",\"id integer\",\"month integer\"}"
+}, {
+  "table_name": "trip_destinations",
+  "columns": "{\"id uuid\",\"updated_at timestamp without time zone\",\"display_order integer\",\"notes text\",\"destination_id uuid\",\"visit_date date\",\"created_at timestamp without time zone\",\"trip_id uuid\"}"
+}, {
+  "table_name": "trips",
+  "columns": "{\"updated_at timestamp without time zone\",\"user_id uuid\",\"end_date date\",\"notes text\",\"created_at timestamp without time zone\",\"deleted_at timestamp without time zone\",\"status character varying\",\"name character varying\",\"id uuid\",\"start_date date\"}"
+}, {
+  "table_name": "user_preferences",
+  "columns": "{\"updated_at timestamp without time zone\",\"id uuid\",\"language character varying\",\"created_at timestamp without time zone\",\"favorite_categories jsonb\",\"theme character varying\",\"push_notifications boolean\",\"notifications_enabled boolean\",\"email_notifications boolean\",\"user_id uuid\"}"
+}, {
+  "table_name": "users",
+  "columns": "{\"name character varying\",\"updated_at timestamp without time zone\",\"apple_id character varying\",\"avatar_url character varying\",\"role character varying\",\"deleted_at timestamp without time zone\",\"country character varying\",\"password_hash character varying\",\"id uuid\",\"email character varying\",\"is_active boolean\",\"phone character varying\",\"created_at timestamp without time zone\",\"email_verified_at timestamp without time zone\",\"google_id character varying\",\"bio text\"}"
+}]
