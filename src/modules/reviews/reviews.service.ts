@@ -8,6 +8,91 @@ export class ReviewsService {
   constructor(private prisma: PrismaService) {}
 
   /**
+   * Get all reviews (with pagination)
+   */
+    async findAll(filters?: {
+    destinationId?: string;
+    userId?: string;
+    minRating?: number;
+    sortBy?: 'rating' | 'helpful' | 'recent';
+    page?: number;
+    perPage?: number;
+  }) {
+    const { destinationId, userId, minRating, sortBy = 'recent', page = 1 } = filters || {};
+    const perPage = filters?.perPage ?? 10;
+
+    const where = {
+      deletedAt: null,
+    };
+
+    // Order by
+    let orderBy: any = { createdAt: 'desc' };
+    if (sortBy === 'rating') orderBy = { rating: 'desc' };
+    if (sortBy === 'helpful') orderBy = { helpfulCount: 'desc' };
+
+    const { skip, take } = PaginationUtil.getPaginationParams(page, perPage);
+
+    const [reviews, total] = await Promise.all([
+      this.prisma.review.findMany({
+        where,
+        skip,
+        take,
+        orderBy,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              avatarUrl: true,
+            },
+          },
+          destination: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
+          images: {
+            orderBy: { displayOrder: 'asc' },
+          },
+        },
+      }),
+      this.prisma.review.count({ where }),
+    ]);
+
+    const formatted = reviews.map((review) => ({
+      id: review.id,
+      user: {
+        id: review.user.id,
+        name: review.user.name,
+        avatarUrl: review.user.avatarUrl,
+      },
+      destination: review.destination,
+      rating: review.rating,
+      comment: review.comment,
+      images: review.images.map((img) => ({
+        id: img.id,
+        url: img.url,
+        thumbnailUrl: img.thumbnailUrl,
+      })),
+      helpfulCount: review.helpfulCount,
+      createdAt: review.createdAt,
+      updatedAt: review.updatedAt,
+    }));
+
+    return {
+      data: formatted,
+      pagination: {
+        page,
+        perPage,
+        total,
+        totalPages: Math.ceil(total / perPage),
+      },
+    };
+  }
+
+  /**
    * Get reviews for a destination
    */
   async findByDestination(destinationId: string, filters: FilterReviewsDto, userId?: string) {

@@ -1,7 +1,10 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { Controller, Post, Get, Put, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { RequestUser } from '../../common/interfaces';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -48,6 +51,37 @@ export class AuthController {
     return {
       success: true,
       message: 'Logged out successfully',
+    };
+  }
+
+  @Get('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Get current user profile',
+    description: 'Returns the authenticated user profile',
+  })
+  async getProfile(@CurrentUser() user: RequestUser) {
+    const profile = await this.authService.getProfile(user.id);
+    return {
+      success: true,
+      data: profile,
+    };
+  }
+
+  @Put('profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
+  @ApiOperation({
+    summary: 'Update current user profile',
+    description: 'Updates the authenticated user profile',
+  })
+  async updateProfile(@CurrentUser() user: RequestUser, @Body() updateData: any) {
+    const updated = await this.authService.updateProfile(user.id, updateData);
+    return {
+      success: true,
+      message: 'Profile updated successfully',
+      data: updated,
     };
   }
 }

@@ -33,4 +33,34 @@ export class HealthService {
       },
     };
   }
+
+  async checkDatabase() {
+    const startTime = Date.now();
+
+    try {
+      await this.prisma.$queryRaw`SELECT 1`;
+      const responseTime = Date.now() - startTime;
+
+      return {
+        success: true,
+        data: {
+          status: 'healthy',
+          responseTime: `${responseTime}ms`,
+          timestamp: new Date().toISOString(),
+        },
+      };
+    } catch (error) {
+      const responseTime = Date.now() - startTime;
+
+      return {
+        success: false,
+        data: {
+          status: 'unhealthy',
+          responseTime: `${responseTime}ms`,
+          timestamp: new Date().toISOString(),
+          error: error.message,
+        },
+      };
+    }
+  }
 }

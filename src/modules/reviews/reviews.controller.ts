@@ -11,6 +11,19 @@ import { RequestUser } from '../../common/interfaces';
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
+  @Get()
+  @ApiOperation({ 
+    summary: 'Get all reviews',
+    description: 'Returns paginated list of all reviews',
+  })
+  async findAll(@Query() filters: FilterReviewsDto) {
+    const result = await this.reviewsService.findAll(filters);
+    return {
+      success: true,
+      ...result,
+    };
+  }
+
   @Get('destination/:destinationId')
   @ApiOperation({ 
     summary: 'Get reviews for destination',

@@ -15,4 +15,13 @@ export class HealthController {
   async check() {
     return this.healthService.check();
   }
+
+  @Get('database')
+  @ApiOperation({
+    summary: 'Database health check',
+    description: 'Returns the health status of the database connection',
+  })
+  async checkDatabase() {
+    return this.healthService.checkDatabase();
+  }
 }

@@ -139,4 +139,71 @@ export class AuthService {
     const payload = { sub: userId, email, role };
     return this.jwtService.sign(payload);
   }
+
+  /**
+   * Get user profile
+   */
+  async getProfile(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+        role: true,
+        preferences: true,
+        isActive: true,
+        emailVerifiedAt: true,
+        createdAt: true,
+        updatedAt: true,
+        _count: {
+          select: {
+            reviews: true,
+            favorites: true,
+            trips: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    return user;
+  }
+
+  /**
+   * Update user profile
+   */
+  async updateProfile(userId: string, updateData: any) {
+    const { password, confirmPassword, ...data } = updateData;
+
+    // If password is being updated
+    if (password) {
+      if (password !== confirmPassword) {
+        throw new BadRequestException('Passwords do not match');
+      }
+      data.passwordHash = await bcrypt.hash(password, 12);
+    }
+
+    const updated = await this.prisma.user.update({
+      where: { id: userId },
+      data,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+        avatarUrl: true,
+        role: true,
+        preferences: true,
+        updatedAt: true,
+      },
+    });
+
+    return updated;
+  }
 }

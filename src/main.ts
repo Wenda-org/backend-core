@@ -76,7 +76,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document, {
+  SwaggerModule.setup('docs', app, document, {
     customSiteTitle: 'Wenda API Documentation',
     customfavIcon: 'https://wenda.ao/favicon.ico',
     customJs: [
@@ -96,7 +96,7 @@ async function bootstrap() {
   console.log(`
   🚀 Application is running!
   
-  📝 API Docs: http://localhost:${port}/api/docs
+  📝 API Docs: http://localhost:${port}/docs
   🔌 API URL: http://localhost:${port}/${apiPrefix}
   🌍 Environment: ${process.env.NODE_ENV || 'development'}
   

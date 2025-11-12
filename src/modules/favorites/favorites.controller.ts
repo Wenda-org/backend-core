@@ -62,4 +62,20 @@ export class FavoritesController {
       message: 'Destination removed from favorites',
     };
   }
+
+  @Get('check/:destinationId')
+  @ApiOperation({ 
+    summary: 'Check if favorited',
+    description: 'Checks if a destination is in user\'s favorites',
+  })
+  async checkFavorite(
+    @CurrentUser() user: RequestUser,
+    @Param('destinationId') destinationId: string,
+  ) {
+    const isFavorited = await this.favoritesService.isFavorite(user.id, destinationId);
+    return {
+      success: true,
+      data: { isFavorited },
+    };
+  }
 }
