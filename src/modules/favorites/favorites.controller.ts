@@ -8,8 +8,8 @@ import { RequestUser } from '../../common/interfaces';
 
 @ApiTags('Favorites')
 @Controller('favorites')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth('JWT-auth')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT-auth')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
 
@@ -18,8 +18,9 @@ export class FavoritesController {
     summary: 'Get favorites',
     description: 'Returns list of user\'s favorite destinations',
   })
-  async findAll(@CurrentUser() user: RequestUser) {
-    const data = await this.favoritesService.findAll(user.id);
+  async findAll(@CurrentUser() user?: RequestUser) {
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    const data = await this.favoritesService.findAll(userId);
     return {
       success: true,
       data,
@@ -35,10 +36,11 @@ export class FavoritesController {
     description: 'Adds a destination to favorites',
   })
   async add(
-    @CurrentUser() user: RequestUser,
     @Body() addDto: AddFavoriteDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.favoritesService.add(user.id, addDto);
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    const data = await this.favoritesService.add(userId, addDto);
     return {
       success: true,
       message: 'Destination added to favorites',
@@ -53,10 +55,11 @@ export class FavoritesController {
     description: 'Removes a destination from favorites',
   })
   async remove(
-    @CurrentUser() user: RequestUser,
     @Param('destinationId') destinationId: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    await this.favoritesService.remove(user.id, destinationId);
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    await this.favoritesService.remove(userId, destinationId);
     return {
       success: true,
       message: 'Destination removed from favorites',
@@ -69,10 +72,11 @@ export class FavoritesController {
     description: 'Checks if a destination is in user\'s favorites',
   })
   async checkFavorite(
-    @CurrentUser() user: RequestUser,
     @Param('destinationId') destinationId: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const isFavorited = await this.favoritesService.isFavorite(user.id, destinationId);
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    const isFavorited = await this.favoritesService.isFavorite(userId, destinationId);
     return {
       success: true,
       data: { isFavorited },

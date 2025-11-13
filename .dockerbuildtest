@@ -1,0 +1,17 @@
+#!/bin/bash
+# Script para testar o build do Docker
+
+echo "🐳 Testando build do Docker..."
+echo ""
+
+# Build
+docker build -t wenda-backend-test . || {
+  echo "❌ Build falhou!"
+  exit 1
+}
+
+echo ""
+echo "✅ Build concluído com sucesso!"
+echo ""
+echo "Para rodar localmente:"
+echo "docker run -p 3000:3000 --env-file .env wenda-backend-test"

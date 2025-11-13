@@ -42,17 +42,19 @@ export class ReviewsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Create review',
     description: 'Creates a new review for a destination',
   })
   async create(
-    @CurrentUser() user: RequestUser,
     @Body() createDto: CreateReviewDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.reviewsService.create(user.id, createDto);
+    // TODO: Remover userId temporário quando reativar autenticação
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    const data = await this.reviewsService.create(userId, createDto);
     return {
       success: true,
       message: 'Review created successfully',
@@ -61,18 +63,19 @@ export class ReviewsController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Update review',
     description: 'Updates your own review',
   })
   async update(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
     @Body() updateDto: UpdateReviewDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.reviewsService.update(user.id, id, updateDto);
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    const data = await this.reviewsService.update(userId, id, updateDto);
     return {
       success: true,
       message: 'Review updated successfully',
@@ -81,18 +84,19 @@ export class ReviewsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth('JWT-auth')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ 
     summary: 'Delete review',
     description: 'Deletes your own review',
   })
   async remove(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    await this.reviewsService.remove(user.id, id);
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    await this.reviewsService.remove(userId, id);
     return {
       success: true,
       message: 'Review deleted successfully',
@@ -100,17 +104,18 @@ export class ReviewsController {
   }
 
   @Post(':id/helpful')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Mark review as helpful',
     description: 'Toggles helpful mark on a review',
   })
   async markHelpful(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.reviewsService.markHelpful(user.id, id);
+    const userId = user?.id || '00000000-0000-0000-0000-000000000001';
+    const data = await this.reviewsService.markHelpful(userId, id);
     return {
       success: true,
       message: data.marked ? 'Review marked as helpful' : 'Helpful mark removed',

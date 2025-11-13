@@ -8,8 +8,8 @@ import { RequestUser } from '../../common/interfaces';
 
 @ApiTags('Trips')
 @Controller('trips')
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth('JWT-auth')
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth('JWT-auth')
 export class TripsController {
   constructor(private readonly tripsService: TripsService) {}
 
@@ -18,8 +18,8 @@ export class TripsController {
     summary: 'Get trips',
     description: 'Returns list of user\'s trips',
   })
-  async findAll(@CurrentUser() user: RequestUser) {
-    const data = await this.tripsService.findAll(user.id);
+  async findAll(@CurrentUser() user?: RequestUser) {
+    const data = await this.tripsService.findAll(user?.id || '00000000-0000-0000-0000-000000000001');
     return {
       success: true,
       data,
@@ -35,10 +35,10 @@ export class TripsController {
     description: 'Returns detailed information about a specific trip',
   })
   async findOne(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.tripsService.findOne(user.id, id);
+    const data = await this.tripsService.findOne(user?.id || '00000000-0000-0000-0000-000000000001', id);
     return {
       success: true,
       data,
@@ -51,10 +51,10 @@ export class TripsController {
     description: 'Creates a new trip itinerary',
   })
   async create(
-    @CurrentUser() user: RequestUser,
     @Body() createDto: CreateTripDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.tripsService.create(user.id, createDto);
+    const data = await this.tripsService.create(user?.id || '00000000-0000-0000-0000-000000000001', createDto);
     return {
       success: true,
       message: 'Trip created successfully',
@@ -68,11 +68,11 @@ export class TripsController {
     description: 'Updates trip information',
   })
   async update(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
     @Body() updateDto: UpdateTripDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.tripsService.update(user.id, id, updateDto);
+    const data = await this.tripsService.update(user?.id || '00000000-0000-0000-0000-000000000001', id, updateDto);
     return {
       success: true,
       message: 'Trip updated successfully',
@@ -87,10 +87,10 @@ export class TripsController {
     description: 'Deletes a trip',
   })
   async remove(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    await this.tripsService.remove(user.id, id);
+    await this.tripsService.remove(user?.id || '00000000-0000-0000-0000-000000000001', id);
     return {
       success: true,
       message: 'Trip deleted successfully',
@@ -103,11 +103,11 @@ export class TripsController {
     description: 'Adds a destination to the trip itinerary',
   })
   async addDestination(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
     @Body() addDto: AddDestinationToTripDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.tripsService.addDestination(user.id, id, addDto);
+    const data = await this.tripsService.addDestination(user?.id || '00000000-0000-0000-0000-000000000001', id, addDto);
     return {
       success: true,
       message: 'Destination added to trip',
@@ -121,12 +121,12 @@ export class TripsController {
     description: 'Updates destination details within a trip (day number, notes)',
   })
   async updateDestination(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
     @Param('destinationId') destinationId: string,
     @Body() updateDto: UpdateTripDestinationDto,
+    @CurrentUser() user?: RequestUser,
   ) {
-    const data = await this.tripsService.updateDestination(user.id, id, destinationId, updateDto);
+    const data = await this.tripsService.updateDestination(user?.id || '00000000-0000-0000-0000-000000000001', id, destinationId, updateDto);
     return {
       success: true,
       message: 'Trip destination updated',
@@ -141,11 +141,11 @@ export class TripsController {
     description: 'Removes a destination from the trip',
   })
   async removeDestination(
-    @CurrentUser() user: RequestUser,
     @Param('id') id: string,
     @Param('destinationId') destinationId: string,
+    @CurrentUser() user?: RequestUser,
   ) {
-    await this.tripsService.removeDestination(user.id, id, destinationId);
+    await this.tripsService.removeDestination(user?.id || '00000000-0000-0000-0000-000000000001', id, destinationId);
     return {
       success: true,
       message: 'Destination removed from trip',

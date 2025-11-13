@@ -77,9 +77,9 @@ export class DestinationsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin')
+  // @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Create destination',
     description: 'Creates a new destination (Admin only)',
@@ -94,9 +94,9 @@ export class DestinationsController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin')
+  // @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Update destination',
     description: 'Updates an existing destination (Admin only)',
@@ -114,9 +114,9 @@ export class DestinationsController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles('admin')
-  @ApiBearerAuth('JWT-auth')
+  // @UseGuards(JwtAuthGuard, RolesGuard)
+  // @Roles('admin')
+  // @ApiBearerAuth('JWT-auth')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ 
     summary: 'Delete destination',
