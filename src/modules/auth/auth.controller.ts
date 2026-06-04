@@ -55,15 +55,14 @@ export class AuthController {
   }
 
   @Get('profile')
-  // @UseGuards(JwtAuthGuard) // TODO: Reativar autenticação
-  // @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Get current user profile',
     description: 'Returns the authenticated user profile',
   })
-  async getProfile(@CurrentUser() user?: RequestUser) {
-    // Temporariamente usando primeiro usuário para testes
-    const userId = user?.id || '1234'; // TODO: Remover depois
+  async getProfile(@CurrentUser() user: RequestUser) {
+    const userId = user.id;
     const profile = await this.authService.getProfile(userId);
     return {
       success: true,
@@ -72,15 +71,14 @@ export class AuthController {
   }
 
   @Put('profile')
-  // @UseGuards(JwtAuthGuard) // TODO: Reativar autenticação
-  // @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Update current user profile',
     description: 'Updates the authenticated user profile',
   })
-  async updateProfile(@Body() updateData: any, @CurrentUser() user?: RequestUser) {
-    // Temporariamente usando primeiro usuário para testes
-    const userId = user?.id || '1234'; // TODO: Remover depois
+  async updateProfile(@Body() updateData: any, @CurrentUser() user: RequestUser) {
+    const userId = user.id;
     const updated = await this.authService.updateProfile(userId, updateData);
     return {
       success: true,

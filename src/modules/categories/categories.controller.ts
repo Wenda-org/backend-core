@@ -38,9 +38,9 @@ export class CategoriesController {
   }
 
   @Post()
-  // @UseGuards(JwtAuthGuard, RolesGuard) // TODO: Reativar autenticação
-  // @Roles('admin')
-  // @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Create new category',
     description: 'Creates a new category (Admin only - authentication required)',
@@ -55,9 +55,9 @@ export class CategoriesController {
   }
 
   @Put(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard) // TODO: Reativar autenticação
-  // @Roles('admin')
-  // @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth('JWT-auth')
   @ApiOperation({ 
     summary: 'Update category',
     description: 'Updates an existing category (Admin only)',
@@ -75,9 +75,9 @@ export class CategoriesController {
   }
 
   @Delete(':id')
-  // @UseGuards(JwtAuthGuard, RolesGuard) // TODO: Reativar autenticação
-  // @Roles('admin')
-  // @ApiBearerAuth('JWT-auth')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @ApiBearerAuth('JWT-auth')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ 
     summary: 'Delete category',
