@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PaginationDto } from '../../common/dto/pagination.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -152,6 +153,23 @@ export class UsersService {
         deletedAt: new Date(),
         isActive: false,
       },
+    });
+  }
+
+  async changePassword(id: string, newPassword: string) {
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const passwordHash = await bcrypt.hash(newPassword, 12);
+    return await this.prisma.user.update({
+      where: { id },
+      data: { passwordHash },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      }
     });
   }
 }

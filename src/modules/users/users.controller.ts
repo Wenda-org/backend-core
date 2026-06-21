@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Put, Delete, Patch, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -67,5 +67,17 @@ export class UsersController {
   async remove(@Param('id') id: string) {
     await this.usersService.remove(id);
     return { success: true, message: 'User deleted successfully' };
+  }
+
+  @Patch(':id/password')
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Change user password (Admin only)' })
+  async changePassword(
+    @Param('id') id: string,
+    @Body() body: { newPassword: string },
+  ) {
+    const result = await this.usersService.changePassword(id, body.newPassword);
+    return { success: true, message: 'Password updated successfully', data: result };
   }
 }
