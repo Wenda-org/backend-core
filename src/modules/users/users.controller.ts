@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Delete, Patch, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Patch, Body, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -34,6 +34,15 @@ export class UsersController {
   }
 
   // ========== ADMIN ENDPOINTS ==========
+
+  @Post()
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Create user (Admin only)' })
+  async create(@Body() createData: any) {
+    const user = await this.usersService.create(createData);
+    return { success: true, message: 'User created successfully', data: user };
+  }
 
   @Get()
   @UseGuards(RolesGuard)
