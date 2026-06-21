@@ -27,7 +27,23 @@ async function bootstrap() {
 
   // CORS configuration
   await app.register(fastifyCors, {
-    origin: process.env.CORS_ORIGIN?.split(',') || '*',
+    origin: (origin, cb) => {
+      if (!origin) {
+        cb(null, true);
+        return;
+      }
+      const allowedOrigins = process.env.CORS_ORIGIN?.split(',') || [];
+      const isLocalhost = origin.startsWith('http://localhost:') || origin.startsWith('http://127.0.0.1:');
+      if (isLocalhost || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        cb(null, true);
+      } else {
+        if (origin.endsWith('.vercel.app')) {
+          cb(null, true);
+        } else {
+          cb(null, false);
+        }
+      }
+    },
     credentials: true,
   });
 
